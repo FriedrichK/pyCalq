@@ -1,0 +1,9 @@
+# Linux
+*~
+
+# Python
+*.pyc
+
+# Sublime Text
+pycalq.sublime-project
+pycalq.sublime-workspace
