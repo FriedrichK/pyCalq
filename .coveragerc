@@ -1,0 +1,2 @@
+[run]
+omit = pycalq/tests/*, venv/*, setup.py

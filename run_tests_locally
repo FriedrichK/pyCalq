@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+if [ ! -d venv ]; then
+	virtualenv venv --no-site-packages
+fi 
+venv/bin/pip install -r test-requirements.txt
+venv/bin/python setup.py test
