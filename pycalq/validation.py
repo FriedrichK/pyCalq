@@ -11,6 +11,10 @@ VALID_SPECIAL_PROPERTIES = {
         'sale_value', 'sale_currency', 'device_agent', 'device_os', 'device_resolution',
         'device_mobile', 'country', 'region', 'city', 'gender', 'age', 'utm_campaign',
         'utm_source', 'utm_medium', 'utm_content', 'utm_term'
+    ],
+    'profile': [
+        'actor', 'full_name', 'image_url', 'country', 'region', 'city', 'gender', 'age',
+        'email', 'phone', 'sms'
     ]
 }
 
@@ -121,3 +125,19 @@ class ActionParameterValidator(ParameterValidator):
     utm_medium = EntryParameter()
     utm_content = EntryParameter()
     utm_term = EntryParameter()
+
+
+class ProfileParameterValidator(ParameterValidator):
+    name = 'profile'
+
+    actor = EntryParameter()
+    full_name = EntryParameter()
+    image_url = EntryParameter()
+    country = EntryParameter()
+    region = EntryParameter()
+    city = EntryParameter()
+    gender = EntryParameter(options=['male', 'female'])
+    age = EntryParameter(integer=True)
+    email = EntryParameter()
+    phone = EntryParameter()
+    sms = EntryParameter()

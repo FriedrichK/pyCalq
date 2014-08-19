@@ -7,12 +7,14 @@ LOG.addHandler(logging.NullHandler())
 
 from urllib3 import PoolManager
 
-from pycalq import CALQ_API_ENDPOINT_TRACKING
+from pycalq import CALQ_API_ENDPOINT_TRACKING, CALQ_API_ENDPOINT_PROFILE, CALQ_API_ENDPOINT_TRANSFER
 from tools import create_timestamp_string
-from validation import ParameterValidationException, ActionParameterValidator
+from validation import ParameterValidationException, ActionParameterValidator, ProfileParameterValidator
 
 
-def track_action(actor, action_name, write_key, properties={}, ip_address=None, timestamp=None, pool_manager=None, log=LOG):
+def track_action(
+        actor, action_name, write_key, properties={}, ip_address=None, timestamp=None, pool_manager=None,
+        endpoint=CALQ_API_ENDPOINT_TRACKING, log=LOG):
     data = {
         'actor': actor,
         'action_name': action_name,
@@ -31,7 +33,33 @@ def track_action(actor, action_name, write_key, properties={}, ip_address=None, 
     except ParameterValidationException, e:
         log.debug(e.message)
 
-    return send_request(CALQ_API_ENDPOINT_TRACKING, data, pool_manager=pool_manager)
+    return send_request(endpoint, data, pool_manager=pool_manager)
+
+
+def submit_profile(actor, write_key, properties={}, pool_manager=None, endpoint=CALQ_API_ENDPOINT_PROFILE, log=LOG):
+    data = {
+        'actor': actor,
+        'write_key': write_key,
+        'properties': properties
+    }
+
+    try:
+        ProfileParameterValidator().validate(properties)
+    except ParameterValidationException, e:
+        log.debug(e.message)
+
+    return send_request(endpoint, data, pool_manager)
+
+
+def transfer_user(old_actor, new_actor, write_key, pool_manager=None, endpoint=CALQ_API_ENDPOINT_TRANSFER, log=LOG):
+    data = {
+        'old_actor': old_actor,
+        'new_actor': new_actor,
+        'write_key': write_key
+    }
+
+    print "transfer endpoint", endpoint
+    return send_request(endpoint, data, pool_manager)
 
 
 def send_request(endpoint, data, pool_manager=None):
