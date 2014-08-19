@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import sys
 import json
 import logging
 LOG = logging.getLogger('pycalq-tracking')
@@ -30,8 +31,9 @@ def track_action(
 
     try:
         ActionParameterValidator().validate(properties)
-    except ParameterValidationException, e:
-        log.debug(e.message)
+    except ParameterValidationException:
+        exc = sys.exc_info()[1]
+        log.debug(exc.message)
 
     return send_request(endpoint, data, pool_manager=pool_manager)
 
@@ -45,8 +47,9 @@ def submit_profile(actor, write_key, properties={}, pool_manager=None, endpoint=
 
     try:
         ProfileParameterValidator().validate(properties)
-    except ParameterValidationException, e:
-        log.debug(e.message)
+    except ParameterValidationException:
+        exc = sys.exc_info()[1]
+        log.debug(exc.message)
 
     return send_request(endpoint, data, pool_manager)
 
@@ -58,7 +61,6 @@ def transfer_user(old_actor, new_actor, write_key, pool_manager=None, endpoint=C
         'write_key': write_key
     }
 
-    print "transfer endpoint", endpoint
     return send_request(endpoint, data, pool_manager)
 
 
