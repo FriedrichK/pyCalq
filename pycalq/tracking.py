@@ -33,7 +33,7 @@ def track_action(
         ActionParameterValidator().validate(properties)
     except ParameterValidationException:
         exc = sys.exc_info()[1]
-        log.debug(exc.message)
+        log.debug(str(exc))
 
     return send_request(endpoint, data, pool_manager=pool_manager)
 
@@ -49,7 +49,7 @@ def submit_profile(actor, write_key, properties={}, pool_manager=None, endpoint=
         ProfileParameterValidator().validate(properties)
     except ParameterValidationException:
         exc = sys.exc_info()[1]
-        log.debug(exc.message)
+        log.debug(str(exc))
 
     return send_request(endpoint, data, pool_manager)
 
