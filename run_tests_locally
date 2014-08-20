@@ -5,4 +5,16 @@ if [ ! -d venv ]; then
 	virtualenv venv --no-site-packages
 fi 
 venv/bin/pip install -r test-requirements.txt
-venv/bin/python setup.py test
+venv/bin/python -3 setup.py test
+
+if [ ! -d venv3.4.1 ]; then
+	/opt/python3.4.1/bin/pyvenv venv3.4.1
+fi 
+venv3.4.1/bin/pip install -r test-requirements.txt
+venv3.4.1/bin/python setup.py test
+
+if [ ! -d venv2.6.9 ]; then
+	virtualenv -p /opt/python2.6.9/bin/python2.6 venv2.6.9 --no-site-packages
+fi 
+venv2.6.9/bin/pip install -r test-requirements.txt
+venv2.6.9/bin/python setup.py test

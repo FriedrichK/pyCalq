@@ -22,7 +22,7 @@ def read(fname):
     except IOError:
         return ""
 
-requirements = ['urllib3>=1.2,<2.0']
+requirements = ['six==1.7.3', 'urllib3>=1.2,<2.0']
 test_requirements = ['pytest',
                      'pytest-cov']
 
@@ -37,9 +37,9 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        #'Programming Language :: Python',
-        'Programming Language :: Python :: 2.7',
-        #'Programming Language :: Python :: 3',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 3',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Software Development :: Libraries',
     ],

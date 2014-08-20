@@ -1,3 +1,7 @@
+from __future__ import unicode_literals
+
+from six import add_metaclass
+
 from pycalq import __calq_api_version__
 
 ERROR_TEMPLATE_SPECIAL_PROPERTIES = 'property %s is not a valid special property recognized by Calq as of API version %s. It will likely be ignored'
@@ -59,7 +63,7 @@ class EntryParameter:
         if not self._name in data or self._options is None:
             return True, None
         result = data[self._name] in self._options
-        message = None if result else ERROR_TEMPLATE_OPTIONS % (data[self._name], self._name, ', '.join([unicode(item) for item in self._options]))
+        message = None if result else ERROR_TEMPLATE_OPTIONS % (data[self._name], self._name, ', '.join([str(item) for item in self._options]))
         return result, message
 
     def _check_integer(self, data):
@@ -74,17 +78,20 @@ class _ParameterValidatorMetaClass(type):
 
     def __new__(meta, name, bases, dct):
         validators = []
+        keys = []
         for key, value in dct.items():
             if isinstance(value, EntryParameter):
                 value.set_name('$' + key)
                 validators.append(value)
-                del dct[key]
+                keys.append(key)
+        for key in keys:
+            del dct[key]
         dct['_validators'] = validators
         return super(_ParameterValidatorMetaClass, meta).__new__(meta, name, bases, dct)
 
 
+@add_metaclass(_ParameterValidatorMetaClass)
 class ParameterValidator:
-    __metaclass__ = _ParameterValidatorMetaClass
 
     def validate(self, data):
         success, message = self._validate_special_properties(data)

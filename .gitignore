@@ -7,6 +7,7 @@
 # Virtualenv
 venv/
 venv3.4.1/
+venv2.6.9/
 
 # Testing
 .coverage

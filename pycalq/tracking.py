@@ -4,13 +4,21 @@ import sys
 import json
 import logging
 LOG = logging.getLogger('pycalq-tracking')
-LOG.addHandler(logging.NullHandler())
+try:
+    from logging import NullHandler
+except ImportError:
+    from logging import Handler
+
+    class NullHandler(Handler):
+        def emit(self, record):
+            pass
+LOG.addHandler(NullHandler())
 
 from urllib3 import PoolManager
 
 from pycalq import CALQ_API_ENDPOINT_TRACKING, CALQ_API_ENDPOINT_PROFILE, CALQ_API_ENDPOINT_TRANSFER
-from tools import create_timestamp_string
-from validation import ParameterValidationException, ActionParameterValidator, ProfileParameterValidator
+from pycalq.tools import create_timestamp_string
+from pycalq.validation import ParameterValidationException, ActionParameterValidator, ProfileParameterValidator
 
 
 def track_action(
